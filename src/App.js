@@ -20,23 +20,24 @@ function App() {
       const jsonData = await response.json();
       setData((prevData) => ({
         ...prevData,
-        [id]: updateJson(jsonData),
+        [id]: jsonData,
       }));
     } catch (error) {
       console.log(error);
     }
   };
 
-  const updateJson = (json) => {
-    return json.filter((item) => !item.startsWith(" "));
-  };
+  // const updateJson = (json) => {
+  //   return json.filter((item) => !item.startsWith(" "));
+  // };
 
   useEffect(() => {
     fetchData("countries");
   }, []);
 
   const handleSelect = async (e) => {
-    const { name, value } = e.target;
+    let { name, value } = e.target;
+    if (value.startsWith(" ")) value = value.substring(1, value.length - 1);
     if (name === "country") {
       fetchData("states", value);
       setData((prevData) => ({
