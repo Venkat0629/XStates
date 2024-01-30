@@ -9,50 +9,42 @@ function App() {
     cities: [],
     selected: { country: "", state: "", city: "" },
   });
-  const fetchCountries = async () => {
+  const fetchData = async (id, country, state) => {
+    let uri = "";
     try {
-      const response = await fetch(`${url}/countries`);
+      if (id === "countries") uri = `${url}/countries`;
+      else if (id === "states") uri = `${url}/country=${country}/states`;
+      else uri = `${url}/country=${country}/state=${state}/cities`;
+
+      const response = await fetch(uri);
       const jsonData = await response.json();
-      setData((prevData) => ({ ...prevData, countries: jsonData }));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const fetchStates = async (country) => {
-    try {
-      const response = await fetch(`${url}/country=${country}/states`);
-      const jsonData = await response.json();
-      setData((prevData) => ({ ...prevData, states: jsonData }));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const fetchCities = async (country, state) => {
-    try {
-      const response = await fetch(
-        `${url}/country=${country}/state=${state}/cities`
-      );
-      const jsonData = await response.json();
-      setData((prevData) => ({ ...prevData, cities: jsonData }));
+      setData((prevData) => ({
+        ...prevData,
+        [id]: updateJson(jsonData),
+      }));
     } catch (error) {
       console.log(error);
     }
   };
 
+  const updateJson = (json) => {
+    return json.filter((item) => !item.startsWith(" "));
+  };
+
   useEffect(() => {
-    fetchCountries();
+    fetchData("countries");
   }, []);
 
   const handleSelect = async (e) => {
     const { name, value } = e.target;
     if (name === "country") {
-      fetchStates(value);
+      fetchData("states", value);
       setData((prevData) => ({
         ...prevData,
         selected: { ...prevData.selected, country: value },
       }));
     } else if (name === "state") {
-      fetchCities(data.selected.country, value);
+      fetchData("cities", data.selected.country, value);
       setData((prevData) => ({
         ...prevData,
         selected: { ...prevData.selected, state: value },
