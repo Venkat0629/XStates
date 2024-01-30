@@ -32,14 +32,14 @@ function App() {
   // };
 
   useEffect(() => {
-    fetchData("countries");
+    fetchData("countries", "", "");
   }, []);
 
   const handleSelect = async (e) => {
     let { name, value } = e.target;
     if (value.startsWith(" ")) value = value.substring(1, value.length - 1);
     if (name === "country") {
-      fetchData("states", value);
+      fetchData("states", value, "");
       setData((prevData) => ({
         ...prevData,
         selected: { ...prevData.selected, country: value },
