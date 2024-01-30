@@ -27,10 +27,6 @@ function App() {
     }
   };
 
-  // const updateJson = (json) => {
-  //   return json.filter((item) => !item.startsWith(" "));
-  // };
-
   useEffect(() => {
     fetchData("countries", "", "");
   }, []);
@@ -103,9 +99,9 @@ function App() {
       )}
       {data.selected.country && data.selected.state && data.selected.city && (
         <p className="subtitle">
-          You selected <span className="title">{data.selected.country}</span>
+          You selected <span className="title">{data.selected.city}</span>
           <span className="text">
-            , {data.selected.state}, {data.selected.city}
+            , {data.selected.state}, {data.selected.country}
           </span>
         </p>
       )}
