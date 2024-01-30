@@ -37,7 +37,7 @@ function App() {
 
   const handleSelect = async (e) => {
     let { name, value } = e.target;
-    if (value.startsWith(" ")) value = value.substring(1, value.length - 1);
+    if (value.startsWith(" ")) value = value.substring(1, value.length);
     if (name === "country") {
       fetchData("states", value, "");
       setData((prevData) => ({
